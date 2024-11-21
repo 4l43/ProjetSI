@@ -10,3 +10,6 @@ $ python3 mySiteWeb/manage.py runserver
 Installation MySql :
 $ pip install mysqlclient
 
+$ pip install Django
+
+
