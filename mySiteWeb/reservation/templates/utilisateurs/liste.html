@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des Utilisateurs</title>
+</head>
+<body>
+    <h1>Liste des Utilisateurs</h1>
+    <ul>
+        {% for utilisateur in utilisateurs %}
+            <li>{{ utilisateur.nom }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'ajouter_utilisateur' %}">Ajouter un utilisateur</a>
+</body>
+</html>
