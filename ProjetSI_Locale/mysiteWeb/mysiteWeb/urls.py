@@ -21,4 +21,6 @@ from App1 import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('App1/', views.index, name='index'),
+    path('calendar/', views.calendrier, name='calendar'),
+    
 ]

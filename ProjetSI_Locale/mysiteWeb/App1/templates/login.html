@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Université Paris Nanterre</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="logo">
+                <img src="{% static 'logo.png'%}" alt="Université Paris Nanterre">
+                <h1>Université Paris Nanterre<br><span>BU</span></h1>
+            </div>
+
+            <div class="login-panel">
+                {% if step == 'identifiant' %}
+                <h2>Entrez votre identifiant</h2>
+                <form method="post" action="{% url 'index' %}">
+                    {% csrf_token %}
+                    <label for="identifiant">Identifiant :</label>
+                    <input type="text" id="identifiant" name="identifiant" placeholder="Votre identifiant" required>
+
+                    <label>
+                        <input type="checkbox" name="remember"> Se souvenir de moi
+                    </label>
+
+                    <button type="submit">Envoyer un code</button>
+                </form>
+                {% elif step == 'code' %}
+                <h2>Entrez le code reçu sur votre boîte mail étudiante</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="identifiant">Code :</label>
+                    <input type="text" id="identifiant" name="code" placeholder="Code reçu" required>
+
+                    <button type="submit">Se connecter</button>
+                </form>
+                {% endif %}
+
+                {% if error_message %}
+                <p style="color: red;">{{ error_message }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <h2>Informations</h2>
+            <p>
+                Vous souhaitez accéder à un service proposé par l'Université Paris Nanterre :<br><br>
+                    - Étudiants : entrez votre <strong>numéro étudiant</strong>.<br>
+                    - Personnels : entrez votre <strong>nom de connexion</strong> (UID).<br>
+                    - Cliquez sur <b>Envoyer un code</b><br>
+                    - Vous recevrez un code par mail<br>
+                    - Entrez ce code et cliquez sur <b>Se connecter</b>.<br>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
