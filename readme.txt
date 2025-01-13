@@ -16,4 +16,5 @@ sudo service mysql status
 
 $ pip install Django
 
-
+Url d'acces au site : 
+http://127.0.0.1:8000/App1/
