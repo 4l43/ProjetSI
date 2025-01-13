@@ -12,6 +12,7 @@ $ pip install mysqlclient
 sudo apt install mysql-server
 sudo service mysql start
 sudo mysql -u root -p
+sudo service mysql status
 
 $ pip install Django
 
