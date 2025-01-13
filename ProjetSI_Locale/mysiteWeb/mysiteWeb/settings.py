@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'mysiteWeb.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',  # Utilisez MySQL
+        'NAME': 'BD',  # Nom de votre base
+        'USER': 'root',                       # Par défaut, l'utilisateur MySQL sous WAMP est 'root'
+        'PASSWORD': 'root',                       # Par défaut, pas de mot de passe sous WAMP
+        'HOST': '/var/run/mysqld/mysqld.sock',                  # Hôte local
+        'PORT': '3306',                       # Port MySQL par défaut
     }
 }
 

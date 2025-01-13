@@ -1,4 +1,4 @@
-#!/home/alex/PSI/ProjetSI_Locale/env1/bin/python3.12
+#!/home/alex/PSI/ProjetSI_Locale/env1/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

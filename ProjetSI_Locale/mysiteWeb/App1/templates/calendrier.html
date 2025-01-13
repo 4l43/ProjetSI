@@ -6,41 +6,26 @@
     <title>Calendrier</title>
 </head>
 <body>
-    <h1>Calendrier de l'Université Paris Nanterre</h1>
-
-    <!-- Exemple de calendrier simple -->
-    <div id="calendrier">
-        <table>
+    <h1>Liste des utilisateurs dans la Whitelist</h1>
+    <table border="1">
+        <thead>
             <tr>
-                <th>Lun</th>
-                <th>Mar</th>
-                <th>Mer</th>
-                <th>Jeu</th>
-                <th>Ven</th>
-                <th>Sam</th>
-                <th>Dim</th>
+                <th>Mail</th>
+                <th>Statut</th>
             </tr>
-            <!-- Vous pouvez remplir ce tableau avec des dates dynamiques -->
+        </thead>
+        <tbody>
+            {% for item in whitelist_items %}
             <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
+                <td>{{ item.mail }}</td>
+                <td>{{ item.statut }}</td>
             </tr>
+            {% empty %}
             <tr>
-                <td>8</td>
-                <td>9</td>
-                <td>10</td>
-                <td>11</td>
-                <td>12</td>
-                <td>13</td>
-                <td>14</td>
+                <td colspan="2">Aucun utilisateur dans la whitelist.</td>
             </tr>
-            <!-- Continuez avec les autres semaines -->
-        </table>
-    </div>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

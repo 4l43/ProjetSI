@@ -1,5 +1,6 @@
 from django.shortcuts import HttpResponse
 from django.shortcuts import render, redirect
+from .models import Whitelist
 import random
 
 def index(request):
@@ -8,7 +9,9 @@ def index(request):
         identifiant = request.POST.get('identifiant')
         print(f"Identifiant reçu : {identifiant}")
         request.session['identifiant'] = identifiant  # Stocker l'identifiant dans la session
-
+        mail = identifiant+"@parisnanterre.fr"
+        print(mail)
+        request.session['mail'] = mail
         # Générer un code aléatoire et le stocker dans la session
         code = random.randint(100000, 999999)
         print(f"Code généré : {code}")
@@ -19,6 +22,9 @@ def index(request):
         # Rediriger vers l'étape 'code' pour permettre à l'utilisateur d'entrer son code
         return render(request, 'login.html', {'step': 'code'})
 
+    
+    
+    #_______________________________________________________________________________________
     # Si le formulaire est soumis avec un code
     elif request.method == 'POST' and 'code' in request.POST:
         entered_code = request.POST.get('code')
@@ -30,6 +36,8 @@ def index(request):
         if entered_code == stored_code:
             print("Code correct")
             # Rediriger vers la page calendrier si le code est correct
+            mail = request.session.get('mail')
+            ajouter_a_whitelist( mail, 'user')
             return redirect('calendar')  # Assurez-vous que l'URL 'calendar' existe
         else:
             print("Code incorrect")
@@ -42,4 +50,16 @@ def index(request):
 
 def calendrier(request):
     print("Page du calendrier")
-    return render(request, 'calendrier.html')
+    # Récupérer tous les éléments de la table whitelist
+    whitelist_items = Whitelist.objects.all()
+    # Passer les éléments de la whitelist au template
+    return render(request, 'calendrier.html', {'whitelist_items': whitelist_items})
+
+def ajouter_a_whitelist(mail, statut):
+    # Vérifie si l'email existe déjà dans la table
+    if not Whitelist.objects.filter(mail=mail).exists():
+        # Si l'email n'existe pas, crée une nouvelle entrée
+        Whitelist.objects.create(mail=mail, statut=statut)
+        print(f"Le mail {mail} a été ajouté à la whitelist.")
+    else:
+        print(f"Le mail {mail} existe déjà dans la whitelist.")
