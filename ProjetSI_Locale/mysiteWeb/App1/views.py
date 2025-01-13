@@ -1,6 +1,7 @@
 from django.shortcuts import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Whitelist
+from .models import Blacklist
 import random
 
 def index(request):
@@ -49,6 +50,8 @@ def index(request):
 
 
 def calendrier(request):
+    if mail = request.session.get('code') == null: 
+         return redirect('calendar')
     print("Page du calendrier")
     # Récupérer tous les éléments de la table whitelist
     whitelist_items = Whitelist.objects.all()
@@ -56,6 +59,9 @@ def calendrier(request):
     return render(request, 'calendrier.html', {'whitelist_items': whitelist_items})
 
 def ajouter_a_whitelist(mail, statut):
+    if Blacklist.objects.filter(mail=mail).exists():
+        print(f"Le mail {mail} existe dans la blacklist.")
+        return render(request, 'login.html', {'step': 'identifiant'})
     # Vérifie si l'email existe déjà dans la table
     if not Whitelist.objects.filter(mail=mail).exists():
         # Si l'email n'existe pas, crée une nouvelle entrée

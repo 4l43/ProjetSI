@@ -6,3 +6,11 @@ class Whitelist(models.Model):
 
     class Meta:
         db_table = 'whitelist'
+
+
+class Blacklist(models.Model):
+    mail = models.CharField(max_length=255)
+    statut = models.CharField(max_length=60)
+
+    class Meta:
+        db_table = 'blacklist'
