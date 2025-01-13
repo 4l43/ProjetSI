@@ -88,6 +88,16 @@ def ajouter_a_whitelist(mail, statut):
     else:
         print(f"Le mail {mail} existe déjà dans la whitelist.")
 
+#____________________________________________________________________________________
+
+
+
+
+
+
+
+
+#____________________________________________________________________________________
 def admini(request):
     #securite : 
     # Fonctionne mais est enregister dans les cookis de l'app
