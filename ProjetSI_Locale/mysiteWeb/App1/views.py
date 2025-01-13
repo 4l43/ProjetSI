@@ -50,9 +50,18 @@ def index(request):
 
 
 def calendrier(request):
-    if mail = request.session.get('code') == null: 
-         return redirect('calendar')
-    print("Page du calendrier")
+    # Fonctionne mais est enregister dans les cookis de l'app
+    if not request.session.get('code') or not request.session.get('identifiant'):
+        print("Pas")
+        return render(request, 'login.html', {'step': 'identifiant'})
+    #____________________________________________________________________________________
+    #debug : 
+    # code = request.session.get('code')
+    # identifiant = request.session.get('identifiant')
+    # print(f"{identifiant} Oui")
+    # print(f"{code} Oui")
+    # print("Page du calendrier")
+    #____________________________________________________________________________________
     # Récupérer tous les éléments de la table whitelist
     whitelist_items = Whitelist.objects.all()
     # Passer les éléments de la whitelist au template
@@ -69,3 +78,11 @@ def ajouter_a_whitelist(mail, statut):
         print(f"Le mail {mail} a été ajouté à la whitelist.")
     else:
         print(f"Le mail {mail} existe déjà dans la whitelist.")
+
+def admini(request):
+    #securite : 
+    # Fonctionne mais est enregister dans les cookis de l'app
+    if not request.session.get('code') or not request.session.get('identifiant') and Whitelist.objects.filter(statut = admin):
+        print("Pas")
+        return render(request, 'login.html', {'step': 'identifiant'})
+    return render(request, 'admini.html')

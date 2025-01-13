@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blacklist and Whitelist Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manage Blacklist and Whitelist</h1>
+
+    <h2>Whitelist</h2>
+    <table id="whitelist">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Example row, dynamically generated rows go here -->
+            <tr>
+                <td>1</td>
+                <td>example@domain.com</td>
+                <td>Active</td>
+                <td><button onclick="moveToBlacklist(1, 'example@domain.com')">Move to Blacklist</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Blacklist</h2>
+    <table id="blacklist">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Example row, dynamically generated rows go here -->
+        </tbody>
+    </table>
+
+    <script>
+        function moveToBlacklist(id, email) {
+            // Find and remove the row from the whitelist
+            let whitelistTable = document.getElementById('whitelist').getElementsByTagName('tbody')[0];
+            let rows = whitelistTable.getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                if (rows[i].cells[0].innerText == id) {
+                    whitelistTable.deleteRow(i);
+                    break;
+                }
+            }
+
+            // Add the row to the blacklist
+            let blacklistTable = document.getElementById('blacklist').getElementsByTagName('tbody')[0];
+            let newRow = blacklistTable.insertRow();
+            newRow.insertCell(0).innerText = id;
+            newRow.insertCell(1).innerText = email;
+            newRow.insertCell(2).innerText = 'Moved from Whitelist';
+            newRow.insertCell(3).innerHTML = `<button onclick="moveToWhitelist(${id}, '${email}')">Move to Whitelist</button>`;
+        }
+
+        function moveToWhitelist(id, email) {
+            // Find and remove the row from the blacklist
+            let blacklistTable = document.getElementById('blacklist').getElementsByTagName('tbody')[0];
+            let rows = blacklistTable.getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                if (rows[i].cells[0].innerText == id) {
+                    blacklistTable.deleteRow(i);
+                    break;
+                }
+            }
+
+            // Add the row to the whitelist
+            let whitelistTable = document.getElementById('whitelist').getElementsByTagName('tbody')[0];
+            let newRow = whitelistTable.insertRow();
+            newRow.insertCell(0).innerText = id;
+            newRow.insertCell(1).innerText = email;
+            newRow.insertCell(2).innerText = 'Active';
+            newRow.insertCell(3).innerHTML = `<button onclick="moveToBlacklist(${id}, '${email}')">Move to Blacklist</button>`;
+        }
+    </script>
+</body>
+</html>
