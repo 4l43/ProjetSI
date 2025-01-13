@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .models import Whitelist
 from .models import Blacklist
 import random
+import subprocess
 
 def index(request):
     # Si le formulaire est soumis avec l'identifiant
@@ -19,11 +20,10 @@ def index(request):
 
         # Ici, tu pourrais envoyer le code par mail (à implémenter si nécessaire)
         request.session['code'] = code
+        envoie_mail(code)
 
         # Rediriger vers l'étape 'code' pour permettre à l'utilisateur d'entrer son code
         return render(request, 'login.html', {'step': 'code'})
-
-    
     
     #_______________________________________________________________________________________
     # Si le formulaire est soumis avec un code
@@ -48,6 +48,15 @@ def index(request):
     # Par défaut, afficher la page avec l'étape d'identification si aucune requête POST n'est reçue
     return render(request, 'login.html', {'step': 'identifiant'})
 
+def envoie_mail(code):
+    print(f"{code} envoyé par mail")
+    """_______________________________________________________________________________________
+    # Envoie du mail ne fonctionne pas pour les mails de l'université: !
+    result = subprocess.run("bash xsendmail.sh", input= code,shell = True, capture_output= True,text = True)
+    print(result.stdout)
+    print(result.stderr)
+    """
+    return code
 
 def calendrier(request):
     # Fonctionne mais est enregister dans les cookis de l'app
