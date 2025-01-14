@@ -58,7 +58,7 @@ def envoie_mail(code, identifiant):
     subject = "Code de vérification"
     smtp_server = "smtp.office365.com"
     smtp_port = 587
-    password = "fzraidenbeacon12375019"  # Évitez d'inclure les mots de passe dans le code
+    password = "mdpamettre"  # Évitez d'inclure les mots de passe dans le code
 
     # Construction du message
     message = f"""
