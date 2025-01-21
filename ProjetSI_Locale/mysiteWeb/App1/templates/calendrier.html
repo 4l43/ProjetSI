@@ -1,31 +1,178 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendrier</title>
+    <title>Calendar</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        td:hover {
+            background-color: #f0f8ff;
+        }
+        .checkbox-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .checkbox-container label {
+            background-color: #e0ffe0;
+            padding: 10px;
+            border: 1px solid #a0ffa0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .submit-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .nav-btn {
+            padding: 5px 10px;
+            margin: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .nav-btn:hover {
+            background-color: #45a049;
+        }
+
+        .occupied {
+            background-color: #d3d3d3;
+            color: #808080;
+            pointer-events: none;  /* Désactive le clic */
+        }
+
+        .occupied input {
+            pointer-events: none;  /* Désactive l'interaction avec les cases à cocher */
+        }
+
+        .error {
+        color: red;
+        font-weight: bold;
+        margin-top: 20px;
+        }
+
+
+
+    </style>
+    <script>
+        function showCheckboxes(day) {
+        const container = document.getElementById('checkbox-container');
+        container.innerHTML = '';
+        const reservedTimes = {{ reserved_times|safe }};  // Récupérer les créneaux réservés depuis Django
+
+        if (day) {
+            for (let i = 8; i <= 18; i++) {
+                const label = document.createElement('label');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.name = 'time_slots';
+                checkbox.value = `${day}-${i}:00`;
+
+                // Vérifier si l'heure est réservée
+                const isReserved = reservedTimes[day] && reservedTimes[day].includes(i);
+
+                if (isReserved) {
+                    checkbox.disabled = true;  // Désactiver le créneau
+                    label.classList.add('occupied');  // Ajouter une classe pour le style
+                    label.textContent = `${day} - ${i}:00 (Réservé)`;
+                } else {
+                    label.textContent = `${day} - ${i}:00`;
+                }
+
+                label.prepend(checkbox);
+                container.appendChild(label);
+            }
+        }
+    }
+
+    </script>
 </head>
 <body>
-    <h1>Liste des utilisateurs dans la Whitelist</h1>
-    <table border="1">
+    <a href="{% url 'reservation' %}">
+        <button type="button">Voir mes réservations</button>
+    </a>
+    
+    
+    <h1>Calendar du mois de {{ month_name }} {{ current_year }}</h1>
+
+    <!-- Navigation entre les mois -->
+    <form method="get" action="{% url 'calendar' %}">
+        <button type="submit" name="month" value="{{ previous_month }}" class="nav-btn">
+            Previous Month
+        </button>
+        <button type="submit" name="month" value="{{ next_month }}" class="nav-btn">
+            Next Month
+        </button>
+        
+    </form>
+
+    <!-- Table du calendrier -->
+    <table>
         <thead>
             <tr>
-                <th>Mail</th>
-                <th>Statut</th>
+                <th>Lun</th>
+                <th>Mar</th>
+                <th>Mer</th>
+                <th>Jeu</th>
+                <th>Ven</th>
+                <th>Sam</th>
+                <th>Dim</th>
             </tr>
         </thead>
         <tbody>
-            {% for item in whitelist_items %}
+            {% for week in calendar_days %}
             <tr>
-                <td>{{ item.mail }}</td>
-                <td>{{ item.statut }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="2">Aucun utilisateur dans la whitelist.</td>
+                {% for day in week %}
+                <td onclick="showCheckboxes({{ day }})">
+                    {% if day %}
+                        <b>{{ day }}</b>
+                    {% endif %}
+                </td>
+                {% endfor %}
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <!-- Formulaire pour les checkboxes -->
+    <form method="post" action="{% url 'calendar' %}">
+        {% csrf_token %}
+        <div id="checkbox-container" class="checkbox-container"></div>
+        <button type="submit" class="submit-btn">Réserver</button>
+    </form>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li class="error">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
 </body>
 </html>

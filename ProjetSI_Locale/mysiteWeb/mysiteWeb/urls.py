@@ -23,5 +23,6 @@ urlpatterns = [
     path('App1/', views.index, name='index'),
     path('calendar/', views.calendrier, name='calendar'),
     path('admini/', views.admini, name='admini'),
+    path('reservation/', views.reservation, name='reservation'),
     
 ]

@@ -2,9 +2,17 @@ from django.shortcuts import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Whitelist
 from .models import Blacklist
+from .models import Appointment
+#from .models import Appointment
+from datetime import datetime , date , time , timedelta
 import random
 import subprocess
 import tempfile
+from calendar import Calendar
+from django.contrib import messages
+import calendar
+
+
 
 def index(request):
     # Si le formulaire est soumis avec l'identifiant
@@ -51,7 +59,7 @@ def index(request):
 
 def envoie_mail(code, identifiant):
     print(f"{code} envoyé par mail")
-    
+    """
     # Configuration des variables pour l'e-mail
     sender_email = "franckzheng123@outlook.com"
     receiver_email = f"{identifiant}@parisnanterre.fr"  # Utilisation de identifiant passé en paramètre
@@ -61,13 +69,12 @@ def envoie_mail(code, identifiant):
     password = "mdpamettre"  # Évitez d'inclure les mots de passe dans le code
 
     # Construction du message
-    message = f"""
-From: {sender_email}
-To: {receiver_email}
-Subject: {subject}
+    message = f
+    From: {sender_email}
+    To: {receiver_email}
+    Subject: {subject}
 
-Voici votre code de vérification : {code}
-"""
+    Voici votre code de vérification : {code}
 
     # Créer un fichier temporaire pour stocker le message
     with tempfile.NamedTemporaryFile(delete=False) as msg_file:
@@ -103,27 +110,115 @@ Voici votre code de vérification : {code}
             import os
             os.remove(msg_file.name)
 
+    """
     return code
 
 
 
 def calendrier(request):
     # Fonctionne mais est enregister dans les cookis de l'app
+    """
     if not request.session.get('code') or not request.session.get('identifiant'):
         print("Pas")
         return render(request, 'login.html', {'step': 'identifiant'})
-    #____________________________________________________________________________________
-    #debug : 
-    # code = request.session.get('code')
-    # identifiant = request.session.get('identifiant')
-    # print(f"{identifiant} Oui")
-    # print(f"{code} Oui")
-    # print("Page du calendrier")
-    #____________________________________________________________________________________
-    # Récupérer tous les éléments de la table whitelist
-    whitelist_items = Whitelist.objects.all()
-    # Passer les éléments de la whitelist au template
-    return render(request, 'calendrier.html', {'whitelist_items': whitelist_items})
+    current_date = datetime.now().strftime('%Y-%m-%d')
+    """
+    current_date = datetime.now()
+    current_year = int(request.GET.get('year', current_date.year))
+    current_month = int(request.GET.get('month', current_date.month))
+    month_name = calendar.month_name[current_month]
+    # Liste des jours par mois (prend en compte les années bissextiles)
+    days_in_month = [
+        31,
+        28 + (1 if current_year % 4 == 0 and (current_year % 100 != 0 or current_year % 400 == 0) else 0),
+        31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+    ]
+
+    # Calculer le premier jour du mois
+    first_day_of_month = datetime(current_year, current_month, 1)
+    start_day = first_day_of_month.weekday()  # 0 = Lundi, 6 = Dimanche
+
+    # Générer le tableau du calendrier
+    calendar_days = []
+    day = 1
+    for week in range(6):
+        week_days = []
+        for d in range(7):
+            if (week == 0 and d < start_day) or day > days_in_month[current_month - 1]:
+                week_days.append('')  # Jour vide
+            else:
+                week_days.append(day)
+                day += 1
+        calendar_days.append(week_days)
+
+    # Récupérer les rendez-vous déjà réservés pour le mois
+    reserved_slots = Appointment.objects.filter(date__year=current_year, date__month=current_month)
+
+    # Créer un dictionnaire pour les créneaux réservés (jour -> heure)
+    reserved_times = {}
+    for appointment in reserved_slots:
+        day = appointment.date.day
+        entry_time = appointment.entry_time.hour
+        if day not in reserved_times:
+            reserved_times[day] = []
+        reserved_times[day].append(entry_time)
+
+    # Gérer les données soumises (réservation)
+    if request.method == 'POST':
+        selected_slots = request.POST.getlist('time_slots')
+        user_email = request.session.get('mail')  # Récupérer l'email de l'utilisateur connecté
+        for slot in selected_slots:
+            try:
+                # Extraire la date et l'heure du slot
+                day, time = slot.split('-')
+                date = datetime(current_year, current_month, int(day)).date()
+                entry_time = datetime.strptime(time, '%H:%M').time()
+                exit_time = (datetime.combine(date, entry_time) + timedelta(hours=1)).time()
+
+                # Vérifier le nombre de créneaux réservés pour l'utilisateur sur ce jour
+                appointments_today = Appointment.objects.filter(mail=user_email, date=date)
+                if appointments_today.count() >= 2:
+                    # Afficher un message d'erreur si l'utilisateur a déjà 2 créneaux
+                    messages.error(request, f"Vous ne pouvez pas réserver plus de 2 créneaux pour le {date}.")
+                    return redirect('calendar')  # Rediriger vers le calendrier
+
+                # Créer un nouvel enregistrement dans la base de données
+                Appointment.objects.create(
+                    mail=user_email,
+                    date=date,
+                    entry_time=entry_time,
+                    exit_time=exit_time
+                )
+            except Exception as e:
+                print(f"Erreur lors de l'insertion : {e}")
+
+    context = {
+        'current_year': current_year,
+        'current_month': current_month,
+        'calendar_days': calendar_days,
+        'month_name': month_name,
+        'reserved_times': reserved_times,  # Passer les créneaux réservés au template
+    }
+
+    return render(request, 'calendrier.html', context)
+#____________________________________________________________________________________
+
+def reservation(request):
+    # Récupérer toutes les entrées de la table Appointment
+    #appointments = Appointment.objects.all()
+    # Récupérer l'email de l'utilisateur connecté ou du paramètre de la requête
+    user_email = request.session.get('mail')  # Si l'utilisateur est authentifié
+
+    # Si l'email est passé dans la requête, utiliser cette valeur
+    # user_email = request.GET.get('email')
+
+    # Filtrer les réservations par e-mail
+    appointments = Appointment.objects.filter(mail=user_email)
+    
+    # Passer les données au template
+    return render(request, 'reservation.html', {'appointments': appointments})
+
+
 
 def ajouter_a_whitelist(mail, statut):
     if Blacklist.objects.filter(mail=mail).exists():
@@ -137,7 +232,6 @@ def ajouter_a_whitelist(mail, statut):
     else:
         print(f"Le mail {mail} existe déjà dans la whitelist.")
 
-#____________________________________________________________________________________
 
 
 
