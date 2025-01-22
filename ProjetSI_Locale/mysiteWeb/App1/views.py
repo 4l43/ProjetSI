@@ -116,17 +116,26 @@ def envoie_mail(code, identifiant):
 
 
 def calendrier(request):
-    # Fonctionne mais est enregister dans les cookis de l'app
-    """
-    if not request.session.get('code') or not request.session.get('identifiant'):
-        print("Pas")
-        return render(request, 'login.html', {'step': 'identifiant'})
-    current_date = datetime.now().strftime('%Y-%m-%d')
-    """
     current_date = datetime.now()
     current_year = int(request.GET.get('year', current_date.year))
     current_month = int(request.GET.get('month', current_date.month))
     month_name = calendar.month_name[current_month]
+
+    # Calcul des mois précédent et suivant
+    if current_month == 1:
+        previous_month = 12
+        previous_year = current_year - 1
+    else:
+        previous_month = current_month - 1
+        previous_year = current_year
+
+    if current_month == 12:
+        next_month = 1
+        next_year = current_year + 1
+    else:
+        next_month = current_month + 1
+        next_year = current_year
+
     # Liste des jours par mois (prend en compte les années bissextiles)
     days_in_month = [
         31,
@@ -165,6 +174,10 @@ def calendrier(request):
 
     # Gérer les données soumises (réservation)
     if request.method == 'POST':
+        # Récupérer le mois et l'année soumis dans le formulaire
+        current_year = int(request.POST.get('year', current_year))
+        current_month = int(request.POST.get('month', current_month))
+
         selected_slots = request.POST.getlist('time_slots')
         user_email = request.session.get('mail')  # Récupérer l'email de l'utilisateur connecté
         for slot in selected_slots:
@@ -197,7 +210,11 @@ def calendrier(request):
         'current_month': current_month,
         'calendar_days': calendar_days,
         'month_name': month_name,
-        'reserved_times': reserved_times,  # Passer les créneaux réservés au template
+        'reserved_times': reserved_times,
+        'previous_month': previous_month,
+        'previous_year': previous_year,
+        'next_month': next_month,
+        'next_year': next_year,
     }
 
     return render(request, 'calendrier.html', context)
