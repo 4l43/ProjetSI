@@ -28,6 +28,22 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Configuration du serveur SMTP
+EMAIL_HOST = 'smtp.gmail.com'  # Le serveur SMTP pour Outlook/Office365
+EMAIL_PORT = 587  # Port pour la connexion sécurisée via SSL
+EMAIL_USE_TLS = True  # Utilisation de SSL
+EMAIL_HOST_USER = 'franckzheng123@gmail.com'  # Ton email
+EMAIL_HOST_PASSWORD = 'xkix ndxp rktx ksfm'  # Ton mot de passe d'application ou ton mot de passe
+
+# Envoi des emails pour les erreurs ou notifications
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # Utilise ton email comme adresse d'envoi par défaut
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+
 # Application definition
 
 INSTALLED_APPS = [
