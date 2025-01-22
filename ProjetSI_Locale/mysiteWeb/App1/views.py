@@ -10,6 +10,11 @@ import tempfile
 from calendar import Calendar
 from django.contrib import messages
 import calendar
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 
@@ -57,60 +62,15 @@ def index(request):
 
 
 def envoie_mail(code, identifiant):
-    print(f"{code} envoyé par mail")
-    """
-    # Configuration des variables pour l'e-mail
-    sender_email = "franckzheng123@outlook.com"
-    receiver_email = f"{identifiant}@parisnanterre.fr"  # Utilisation de identifiant passé en paramètre
     subject = "Code de vérification"
-    smtp_server = "smtp.office365.com"
-    smtp_port = 587
-    password = "mdpamettre"  # Évitez d'inclure les mots de passe dans le code
+    message = f"Voici votre code de vérification : {code}"
+    recipient = f"{identifiant}@parisnanterre.fr"
 
-    # Construction du message
-    message = f
-    From: {sender_email}
-    To: {receiver_email}
-    Subject: {subject}
-
-    Voici votre code de vérification : {code}
-
-    # Créer un fichier temporaire pour stocker le message
-    with tempfile.NamedTemporaryFile(delete=False) as msg_file:
-        msg_file.write(message.encode('utf-8'))
-        msg_file.close()
-
-        # Commande curl pour envoyer l'e-mail
-        curl_command = [
-            "curl",
-            "--url", f"smtp://{smtp_server}:{smtp_port}",
-            "--ssl-reqd",
-            "--mail-from", sender_email,
-            "--mail-rcpt", receiver_email,
-            "--user", f"{sender_email}:{password}",
-            "--upload-file", msg_file.name
-        ]
-
-        try:
-            # Exécution de la commande avec subprocess
-            result = subprocess.run(
-                curl_command, 
-                text=True, 
-                capture_output=True
-            )
-
-            print(result.stdout)  # Affiche la sortie standard
-            print(result.stderr)  # Affiche les erreurs éventuelles
-
-        except Exception as e:
-            print(f"Erreur lors de l'envoi de l'e-mail : {e}")
-        finally:
-            # Nettoyage du fichier temporaire
-            import os
-            os.remove(msg_file.name)
-
-    """
-    return code
+    try:
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [recipient])
+        print(f"Code {code} envoyé par mail à {recipient}")
+    except Exception as e:
+        print(f"Erreur lors de l'envoi de l'e-mail : {e}")
 
 
 
