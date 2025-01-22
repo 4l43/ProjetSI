@@ -1,30 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'reservation_style.css'%}">
     <title>Liste des Appointments</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            text-align: center;
-            padding: 8px;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-    </style>
 </head>
 <body>
     <h1>Liste des Appointments</h1>
+    <a href="{% url 'calendar' %}">
+        <button type="button">Retour</button>
+    </a>
     <table>
         <thead>
             <tr>
-                <th>Email</th>
+                <!-- <th>Email</th> -->
                 <th>Date</th>
                 <th>Heure de début</th>
                 <th>Heure de fin</th>
@@ -33,7 +24,7 @@
         <tbody>
             {% for appointment in appointments %}
             <tr>
-                <td>{{ appointment.mail }}</td>
+                <!-- <td>{{ appointment.mail }}</td> -->
                 <td>{{ appointment.date }}</td>
                 <td>{{ appointment.entry_time }}</td>
                 <td>{{ appointment.exit_time }}</td>

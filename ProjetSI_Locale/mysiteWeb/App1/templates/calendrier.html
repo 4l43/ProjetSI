@@ -1,82 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendar</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            text-align: center;
-            padding: 10px;
-            cursor: pointer;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        td:hover {
-            background-color: #f0f8ff;
-        }
-        .checkbox-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .checkbox-container label {
-            background-color: #e0ffe0;
-            padding: 10px;
-            border: 1px solid #a0ffa0;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .submit-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .submit-btn:hover {
-            background-color: #45a049;
-        }
-        .nav-btn {
-            padding: 5px 10px;
-            margin: 10px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .nav-btn:hover {
-            background-color: #45a049;
-        }
-
-        .occupied {
-            background-color: #d3d3d3;
-            color: #808080;
-            pointer-events: none;  /* Disable click */
-        }
-
-        .occupied input {
-            pointer-events: none;  /* Disable interaction with checkboxes */
-        }
-
-        .error {
-            color: red;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'calendar_style.css'%}">
     <script>
         function showCheckboxes(day) {
             const container = document.getElementById('checkbox-container');
@@ -115,6 +44,7 @@
     </a>
     
     <h1>Calendar for {{ month_name }} {{ current_year }}</h1>
+    
 
     <!-- Navigation between months -->
     <form method="get" action="{% url 'calendar' %}">

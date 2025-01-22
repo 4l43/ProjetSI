@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from .models import Whitelist
 from .models import Blacklist
 from .models import Appointment
-#from .models import Appointment
 from datetime import datetime , date , time , timedelta
 import random
 import subprocess
