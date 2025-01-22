@@ -19,6 +19,7 @@
                 <th>Date</th>
                 <th>Heure de début</th>
                 <th>Heure de fin</th>
+                <th>Box</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +29,7 @@
                 <td>{{ appointment.date }}</td>
                 <td>{{ appointment.entry_time }}</td>
                 <td>{{ appointment.exit_time }}</td>
+                <td>{{ appointment.idbox }}</td>
             </tr>
             {% empty %}
             <tr>

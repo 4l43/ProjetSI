@@ -24,5 +24,6 @@ urlpatterns = [
     path('calendar/', views.calendrier, name='calendar'),
     path('admini/', views.admini, name='admini'),
     path('reservation/', views.reservation, name='reservation'),
+    path('box/', views.box, name='box'),
     
 ]

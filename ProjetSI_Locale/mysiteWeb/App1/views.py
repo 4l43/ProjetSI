@@ -136,6 +136,8 @@ def calendrier(request):
         # Récupérer le mois et l'année soumis dans le formulaire
         current_year = int(request.POST.get('year', current_year))
         current_month = int(request.POST.get('month', current_month))
+        selected_box = request.session.get('selected_box')  # Récupérer la box sélectionnée
+
 
         selected_slots = request.POST.getlist('time_slots')
         user_email = request.session.get('mail')  # Récupérer l'email de l'utilisateur connecté
@@ -156,6 +158,7 @@ def calendrier(request):
 
                 # Créer un nouvel enregistrement dans la base de données
                 Appointment.objects.create(
+                    idbox=selected_box,
                     mail=user_email,
                     date=date,
                     entry_time=entry_time,
@@ -209,11 +212,22 @@ def ajouter_a_whitelist(mail, statut):
         print(f"Le mail {mail} existe déjà dans la whitelist.")
 
 
+#____________________________________________________________________________________
+def box(request):
+    if request.method == "POST":
+        selected_box = request.POST.get("box")  # Récupérer l'identifiant de la box sélectionnée
+        if selected_box:
+            request.session['selected_box'] = selected_box  # Stocker la box sélectionnée dans la session
+            return redirect('calendar')  # Redirection vers la page du calendrier
 
+    # Exemple de boxes disponibles
+    boxes = [
+        {"id": 1, "name": "Box 1"},
+        {"id": 2, "name": "Box 2"},
+        {"id": 3, "name": "Box 3"}
+    ]
 
-
-
-
+    return render(request, 'box.html', {'boxes': boxes})
 
 
 #____________________________________________________________________________________

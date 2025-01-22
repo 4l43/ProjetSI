@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sélectionnez une Box</title>
+</head>
+<body>
+    <h1>Choisissez une Box</h1>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {% for box in boxes %}
+            <button type="submit" name="box" value="{{ box.id }}">{{ box.name }}</button>
+        {% endfor %}
+    </form>
+</body>
+</html>
