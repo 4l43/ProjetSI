@@ -6,6 +6,7 @@ th, td {
     border: 1px solid #ddd;
     text-align: center;
     padding: 10px;
+    cursor: pointer;
 }
 th {
     background-color: #f4f4f4;
@@ -13,10 +14,58 @@ th {
 td:hover {
     background-color: #f0f8ff;
 }
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+.checkbox-container label {
+    background-color: #e0ffe0;
+    padding: 10px;
+    border: 1px solid #a0ffa0;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.submit-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.submit-btn:hover {
+    background-color: #45a049;
+}
+.nav-btn {
+    padding: 5px 10px;
+    margin: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.nav-btn:hover {
+    background-color: #45a049;
+}
 
-/* Style pour les créneaux réservés */
-.reserved {
+.occupied {
     background-color: #d3d3d3;
     color: #808080;
-    pointer-events: none; /* Désactive le clic sur les créneaux réservés */
+    pointer-events: none;  /* Désactive le clic */
+}
+
+.occupied input {
+    pointer-events: none;  /* Désactive l'interaction avec les cases à cocher */
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+    margin-top: 20px;
 }
