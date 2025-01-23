@@ -33,6 +33,7 @@
 
                     label.prepend(checkbox);
                     container.appendChild(label);
+                    console.log('{{ reserved_times|safe|escapejs }}');
                 }
             }
         }
@@ -88,6 +89,8 @@
     <!-- Form for checkboxes -->
     <form method="post" action="{% url 'calendar' %}">
         {% csrf_token %}
+        <input type="hidden" name="year" value="{{ current_year }}">
+        <input type="hidden" name="month" value="{{ current_month }}">
         <div id="checkbox-container" class="checkbox-container"></div>
         <button type="submit" class="submit-btn">Book</button>
     </form>

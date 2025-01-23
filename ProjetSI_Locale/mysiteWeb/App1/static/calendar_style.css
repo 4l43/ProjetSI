@@ -1,140 +1,22 @@
-body{
-    background-color:#f7c3c4;
-    width: 50%;
-    position: relative;
-    left: 25%;
-}
-
-form .nav-btn{
-    margin-left: 50%;
-    display: flex;
-}
-
-/* Modern Table Design */
 table {
     width: 100%;
     border-collapse: collapse;
-    font-family: 'Arial', sans-serif;
-    margin-top: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 12px; /* Arrondi des angles extérieurs */
-    overflow: hidden;
 }
-
 th, td {
     border: 1px solid #ddd;
     text-align: center;
-    padding: 12px;
+    padding: 10px;
 }
-
 th {
-    background-color: #c93738; /* Utilisation de la couleur d'accentuation */
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
+    background-color: #f4f4f4;
 }
-
-td {
-    cursor: pointer; /* Ajout du curseur pointer */
-}
-
 td:hover {
-    background-color: #f8d7da; /* Couleur de survol pour un contraste léger */
-    transition: background-color 0.3s ease;
+    background-color: #f0f8ff;
 }
 
-/* Checkbox Container */
-.checkbox-container {
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.checkbox-container input[type="checkbox"] {
-    display: none; /* Rend invisible la checkbox */
-}
-
-.checkbox-container label {
-    background-color: #ffffff;
-    padding: 10px 15px;
-    border: 1px solid #c93738;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #000000;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    cursor: pointer; /* Rend le conteneur cliquable */
-}
-
-/* Lorsque la checkbox est cochée */
-.checkbox-container label:checked {
-    background-color: #c93738;
-    color: white; /* Texte blanc lorsque coché */
-    border: 1px solid #a33030;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Effet visuel de sélection */
-}
-
-/* Lorsque la checkbox est décochée */
-.checkbox-container input:not(:checked) + label {
-    background-color: #ffffff;
-    color: #000000; /* Retour à la couleur de texte initiale */
-    border: 1px solid #c93738;
-}
-
-
-/* Buttons */
-button {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #c93738; /* Couleur d'accentuation */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-button:hover {
-    background-color: #a33030; /* Couleur d'accentuation légèrement plus sombre */
-}
-
-/* Navigation Buttons */
-.nav-btn {
-    margin: 10px;
-    padding: 8px 15px;
-    background-color: #c93738;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.nav-btn:hover {
-    background-color: #a33030;
-}
-
-/* Occupied State */
-.occupied {
-    background-color: #f9f9f9;
-    color: #b0b0b0;
-    pointer-events: none; /* Désactive les clics */
-}
-
-.occupied input {
-    pointer-events: none; /* Désactive l'interaction avec les cases */
-}
-
-/* Error Message */
-.error {
-    color: #c93738;
-    font-weight: bold;
-    margin-top: 20px;
-    text-align: center;
+/* Style pour les créneaux réservés */
+.reserved {
+    background-color: #d3d3d3;
+    color: #808080;
+    pointer-events: none; /* Désactive le clic sur les créneaux réservés */
 }

@@ -15,6 +15,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from django.core.mail import send_mail
 from django.conf import settings
+import json
 
 
 
@@ -118,9 +119,12 @@ def calendrier(request):
                 week_days.append(day)
                 day += 1
         calendar_days.append(week_days)
+    
+    print(f"Current month: {current_month}, Days in month: {days_in_month[current_month - 1]}")
+
 
     # Récupérer les rendez-vous déjà réservés pour le mois
-    reserved_slots = Appointment.objects.filter(date__year=current_year, date__month=current_month)
+    reserved_slots = Appointment.objects.filter(date__year=current_year, date__month=current_month)# !!!!!!! ajouter box 
 
     # Créer un dictionnaire pour les créneaux réservés (jour -> heure)
     reserved_times = {}
@@ -130,6 +134,7 @@ def calendrier(request):
         if day not in reserved_times:
             reserved_times[day] = []
         reserved_times[day].append(entry_time)
+    reserved_times = json.dumps(reserved_times)
 
     # Gérer les données soumises (réservation)
     if request.method == 'POST':
