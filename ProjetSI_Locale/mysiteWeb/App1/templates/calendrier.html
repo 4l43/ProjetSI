@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendar</title>
     <link rel="stylesheet" href="{% static 'calendar_style.css'%}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <script>
         function showCheckboxes(day) {
             const container = document.getElementById('checkbox-container');
@@ -26,9 +29,9 @@
                     if (isReserved) {
                         checkbox.disabled = true; // Disable the slot
                         label.classList.add('occupied'); // Add a class for styling
-                        label.textContent = `${day} - ${i}:00 (Reserved)`;
+                        label.textContent = `${day} - ${i}:00h (Reserver)`;
                     } else {
-                        label.textContent = `${day} - ${i}:00`;
+                        label.textContent = `${day} - ${i}:00h`;
                     }
 
                     label.prepend(checkbox);
@@ -40,24 +43,34 @@
     </script>
 </head>
 <body>
-    <a href="{% url 'reservation' %}">
-        <button type="button">View My Reservations</button>
-    </a>
-    
-    <h1>Calendar for {{ month_name }} {{ current_year }}</h1>
-    
-
-    <!-- Navigation between months -->
-    <form method="get" action="{% url 'calendar' %}">
-        <input type="hidden" name="year" value="{{ current_year }}">
-        <button type="submit" name="month" value="{{ previous_month }}" class="nav-btn">
-            Previous Month
-        </button>
-        <button type="submit" name="month" value="{{ next_month }}" class="nav-btn">
-            Next Month
-        </button>
-    </form>
-    
+    <nav class="navbar">
+        <div class="left-buttons">
+            <a href="{% url 'reservation' %}">
+                <button type="button">Mes réservations</button>
+            </a>
+            <a href="">
+                <button type="button">Changer de box</button>
+            </a>
+        </div>
+        <div class="right-button logout">
+            <a href="">
+                <button type="button">Déconnexion</button>
+            </a>
+        </div>
+    </nav>
+    <div id="mois">
+        <h1>{{ month_name }} {{ current_year }}</h1>
+        <!-- Navigation between months -->
+        <form method="get" id="mois-nav" action="{% url 'calendar' %}">
+            <input type="hidden" name="year" value="{{ current_year }}">
+            <button type="submit" name="month" value="{{ previous_month }}" class="nav-btn">
+                Precedent
+            </button>
+            <button type="submit" name="month" value="{{ next_month }}" class="nav-btn">
+                Suivant
+            </button>
+        </form>
+    </div>
     <!-- Calendar table -->
     <table>
         <thead>

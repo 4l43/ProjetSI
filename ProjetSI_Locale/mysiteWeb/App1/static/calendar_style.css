@@ -1,71 +1,217 @@
+@keyframes fondu {
+    0% {
+      opacity: 0;
+    }
+    50%{
+        opacity: 0,5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+*{
+    font-family: "Poppins", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body{
+    background-color: #150101;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    animation: fondu  1s ease-in-out forwards;
+}
+
+h1{
+    color: white;
+}
+
+button{
+    border-radius: 20%;
+}
+#mois{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+#mois-nav{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+
 table {
-    width: 100%;
+    width: 100vw;
     border-collapse: collapse;
 }
+
+
 th, td {
-    border: 1px solid #ddd;
+    /* border: 1px solid #403d3d; */
     text-align: center;
     padding: 10px;
     cursor: pointer;
 }
+
 th {
-    background-color: #f4f4f4;
+    border: 1px solid #403d3d;
+    background-color: #ed0029;
+    cursor: default;
+}
+
+td{
+    /* border-radius: 20%; */
+    font-size: medium;
+    color: #f4e8e8;
+    /* background-color: #1e1e1e; */
+    background-color: #150101;
 }
 td:hover {
-    background-color: #f0f8ff;
+    font-size: large;
+    transition: font-size 0.5s ease;
+    background-color: #382b30;
+    color: #ed0029;
 }
+
+label,input{
+    cursor: pointer;
+}
+
 .checkbox-container {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
+    text-align: center;
+    /* gap: 10px; */
+    /* margin-top: 20px; */
 }
 .checkbox-container label {
-    background-color: #e0ffe0;
-    padding: 10px;
-    border: 1px solid #a0ffa0;
-    border-radius: 5px;
+    /* background-color: #e0ffe0; */
+    padding: 30px;
+    /* border: 1px solid #a0ffa0; */
+    border-top: 1px solid #403d3d;
+    /* border-radius: 5px; */
     display: flex;
     align-items: center;
     gap: 5px;
+    justify-content: center;
+    color: white;
+    animation: fondu  1s ease-in-out forwards;
+
+}
+
+.checkbox-container label:hover {
+    color: #ed0029;
+    background-color: #321919;
 }
 .submit-btn {
+    position: relative;
+    left: 60%;
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #4caf50;
+    /* background-color: #4caf50; */
+    background-color: #150101;
+    border: 1px solid #403d3d;
     color: white;
-    border: none;
+    /* border: none; */
     border-radius: 5px;
     cursor: pointer;
 }
 .submit-btn:hover {
-    background-color: #45a049;
+    background-color: #ed0029;
 }
 .nav-btn {
     padding: 5px 10px;
     margin: 10px;
-    background-color: #4caf50;
+    /* background-color: #4caf50; */
     color: white;
-    border: none;
+    /* border: none; */
+    background-color: #150101;
+    border: 1px solid #403d3d;
     border-radius: 5px;
     cursor: pointer;
 }
 .nav-btn:hover {
-    background-color: #45a049;
+    /* background-color: #45a049; */
+    background-color: #ed0029;
 }
 
 .occupied {
-    background-color: #d3d3d3;
+    /* background-color: #d3d3d3; */
     color: #808080;
     pointer-events: none;  /* Désactive le clic */
 }
 
+label.occupied input #text{
+    color: #403d3d;
+}
+
 .occupied input {
-    pointer-events: none;  /* Désactive l'interaction avec les cases à cocher */
+    pointer-events: none;
+    display: none;  /* Désactive l'interaction avec les cases à cocher */
 }
 
 .error {
     color: red;
     font-weight: bold;
     margin-top: 20px;
+}
+
+
+/* navbar */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #150101;
+    color: #fff;
+    padding: 10px 20px;
+    border-bottom: 1px solid #403d3d;
+}
+.navbar .left-buttons,
+.navbar .right-button {
+    display: flex;
+    align-items: center;
+}
+.navbar a {
+    text-decoration: none;
+    margin: 0 5px;
+}
+.navbar button {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    /* padding: 10px 15px; */
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.navbar button:hover {
+    background-color: #555;
+    color: #ed0029;
+}
+.navbar .logout button {
+    padding: 10px 15px;
+    background-color: #ed0029; /* Rouge pour le bouton déconnexion */
+    font-weight: bold;
+}
+.navbar .logout button:hover {
+    background-color: #d32f2f;
+    color: wheat;
+    
+}
+
+.navbar .left-buttons button{
+    background-color: #150101;
+}
+
+.navbar .left-buttons a:hover {
+    color: #ed0029;
+    text-decoration: none;
+    margin: 0 5px;
+    border-bottom: 1px solid #ed0029;
 }
