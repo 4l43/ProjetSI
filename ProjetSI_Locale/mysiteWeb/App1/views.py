@@ -273,7 +273,22 @@ def box(request):
     ]
 
     return render(request, 'box.html', {'boxes': boxes})
-
+    
+def delete_appointment(request, appointment_id):
+    """
+    Vue pour supprimer un rendez-vous en fonction de son ID.
+    """
+    # Récupérer le rendez-vous correspondant ou retourner une 404 si introuvable
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+    
+    # Supprimer le rendez-vous
+    appointment.delete()
+    
+    # Ajouter un message de confirmation pour l'utilisateur (facultatif)
+    messages.success(request, f"Le rendez-vous du {appointment.date} à {appointment.entry_time} a été supprimé avec succès.")
+    
+    # Rediriger vers la liste des rendez-vous (ajustez l'URL selon votre projet)
+    return redirect(reverse('reservation'))
 
 #____________________________________________________________________________________
 def admini(request):
