@@ -28,5 +28,7 @@ urlpatterns = [
     path('box/', views.box, name='box'),
     path('move_to_blacklist/', views.move_to_blacklist, name='move_to_blacklist'),
     path('move_to_whitelist/', views.move_to_whitelist, name='move_to_whitelist'),
+    path('delete-appointment/<int:appointment_id>/', views.delete_appointment, name='delete_appointment'),
+
     
 ]
