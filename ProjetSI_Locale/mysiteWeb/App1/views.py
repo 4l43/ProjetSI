@@ -54,7 +54,7 @@ def index(request):
             # Rediriger vers la page calendrier si le code est correct
             mail = request.session.get('mail')
             ajouter_a_whitelist(mail, 'user')
-            return redirect('calendar')  # Assurez-vous que l'URL 'calendar' existe
+            return redirect('box')  # Assurez-vous que l'URL 'calendar' existe
         else:
             print("Code incorrect")
             # Si le code est incorrect, redemander l'identifiant
