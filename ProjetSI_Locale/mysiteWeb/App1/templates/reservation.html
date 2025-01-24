@@ -43,6 +43,12 @@
                 <td>{{ appointment.entry_time }}</td>
                 <td>{{ appointment.exit_time }}</td>
                 <td>{{ appointment.idbox }}</td>
+                <td>
+                    <form method="POST" action="{% url 'delete_appointment' appointment.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button">Supprimer</button>
+                    </form>
+                </td>
             </tr>
             {% empty %}
             <tr>
