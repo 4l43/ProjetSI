@@ -16,6 +16,8 @@ from email.mime.multipart import MIMEMultipart
 from django.core.mail import send_mail
 from django.conf import settings
 import json
+from django.http import JsonResponse
+from .models import Whitelist, Blacklist
 
 
 
@@ -202,6 +204,44 @@ def reservation(request):
     # Passer les données au template
     return render(request, 'reservation.html', {'appointments': appointments})
 
+def move_to_blacklist(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+
+        # Trouver l'utilisateur dans la whitelist
+        try:
+            user = Whitelist.objects.get(mail=email)
+            
+            # Déplacer l'utilisateur vers la blacklist
+            Blacklist.objects.create(mail=user.mail, statut=user.statut)  # Ajouter à la blacklist
+            user.delete()  # Supprimer de la whitelist
+
+            return JsonResponse({'success': True, 'message': f'{email} moved to Blacklist.'})
+        except Whitelist.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'User not found in Whitelist.'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+def move_to_whitelist(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+
+        # Trouver l'utilisateur dans la blacklist
+        try:
+            user = Blacklist.objects.get(mail=email)
+            
+            # Déplacer l'utilisateur vers la whitelist
+            Whitelist.objects.create(mail=user.mail, statut='Active')  # Ajouter à la whitelist (status peut être "Active")
+            user.delete()  # Supprimer de la blacklist
+
+            return JsonResponse({'success': True, 'message': f'{email} moved to Whitelist.'})
+        except Blacklist.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'User not found in Blacklist.'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
 
 
 def ajouter_a_whitelist(mail, statut):
@@ -237,9 +277,12 @@ def box(request):
 
 #____________________________________________________________________________________
 def admini(request):
-    #securite : 
-    # Fonctionne mais est enregister dans les cookis de l'app
-    if not request.session.get('code') or not request.session.get('identifiant') and Whitelist.objects.filter(statut = admin):
-        print("Pas")
-        return render(request, 'login.html', {'step': 'identifiant'})
-    return render(request, 'admini.html')
+    # Récupérer les utilisateurs de la whitelist et de la blacklist
+    users_in_whitelist = Whitelist.objects.all()
+    users_in_blacklist = Blacklist.objects.all()
+
+    # Passer les deux listes à la page
+    return render(request, 'admini.html', {
+        'users': users_in_whitelist,
+        'blacklist': users_in_blacklist
+    })

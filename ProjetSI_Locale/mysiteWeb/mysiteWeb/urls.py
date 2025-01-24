@@ -26,5 +26,7 @@ urlpatterns = [
     path('admini/', views.admini, name='admini'),
     path('reservation/', views.reservation, name='reservation'),
     path('box/', views.box, name='box'),
+    path('move_to_blacklist/', views.move_to_blacklist, name='move_to_blacklist'),
+    path('move_to_whitelist/', views.move_to_whitelist, name='move_to_whitelist'),
     
 ]

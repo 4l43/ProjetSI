@@ -47,13 +47,20 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Example row, dynamically generated rows go here -->
-            <tr>
-                <td>1</td>
-                <td>example@domain.com</td>
-                <td>Active</td>
-                <td><button onclick="moveToBlacklist(1, 'example@domain.com')">Move to Blacklist</button></td>
-            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.mail }}</td>
+                    <td>{{ user.statut }}</td>
+                    <td>
+                        <button onclick="moveToBlacklist({{ user.id }}, '{{ user.mail }}')">Move to Blacklist</button>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No users in the whitelist.</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
@@ -68,49 +75,108 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Example row, dynamically generated rows go here -->
+            {% for user in blacklist %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.mail }}</td>
+                    <td>{{ user.statut }}</td>
+                    <td>
+                        <button onclick="moveToWhitelist({{ user.id }}, '{{ user.mail }}')">Move to Whitelist</button>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No users in the blacklist.</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
     <script>
         function moveToBlacklist(id, email) {
-            // Find and remove the row from the whitelist
-            let whitelistTable = document.getElementById('whitelist').getElementsByTagName('tbody')[0];
-            let rows = whitelistTable.getElementsByTagName('tr');
-            for (let i = 0; i < rows.length; i++) {
-                if (rows[i].cells[0].innerText == id) {
-                    whitelistTable.deleteRow(i);
-                    break;
+            fetch('/move_to_blacklist/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken') // Ajoutez le CSRF token pour sécuriser la requête
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    moveRow('whitelist', 'blacklist', id, email, 'Moved to Blacklist');
+                } else {
+                    alert(data.message);
                 }
-            }
-
-            // Add the row to the blacklist
-            let blacklistTable = document.getElementById('blacklist').getElementsByTagName('tbody')[0];
-            let newRow = blacklistTable.insertRow();
-            newRow.insertCell(0).innerText = id;
-            newRow.insertCell(1).innerText = email;
-            newRow.insertCell(2).innerText = 'Moved from Whitelist';
-            newRow.insertCell(3).innerHTML = `<button onclick="moveToWhitelist(${id}, '${email}')">Move to Whitelist</button>`;
+            })
+            .catch(error => console.error('Erreur:', error));
         }
 
         function moveToWhitelist(id, email) {
-            // Find and remove the row from the blacklist
-            let blacklistTable = document.getElementById('blacklist').getElementsByTagName('tbody')[0];
-            let rows = blacklistTable.getElementsByTagName('tr');
+            fetch('/move_to_whitelist/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken') // Ajoutez le CSRF token pour sécuriser la requête
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    moveRow('blacklist', 'whitelist', id, email, 'Moved to Whitelist');
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Erreur:', error));
+        }
+        function moveRow(fromTable, toTable, id, email, status) {
+            let table = document.getElementById(fromTable).getElementsByTagName('tbody')[0];
+            let rows = table.getElementsByTagName('tr');
+
+            // Supprimer la ligne de la table d'origine
             for (let i = 0; i < rows.length; i++) {
                 if (rows[i].cells[0].innerText == id) {
-                    blacklistTable.deleteRow(i);
+                    table.deleteRow(i);
                     break;
                 }
             }
 
-            // Add the row to the whitelist
-            let whitelistTable = document.getElementById('whitelist').getElementsByTagName('tbody')[0];
-            let newRow = whitelistTable.insertRow();
+            // Ajouter la ligne à la table de destination
+            let targetTable = document.getElementById(toTable).getElementsByTagName('tbody')[0];
+            let newRow = targetTable.insertRow();
             newRow.insertCell(0).innerText = id;
             newRow.insertCell(1).innerText = email;
-            newRow.insertCell(2).innerText = 'Active';
-            newRow.insertCell(3).innerHTML = `<button onclick="moveToBlacklist(${id}, '${email}')">Move to Blacklist</button>`;
+            newRow.insertCell(2).innerText = status;
+
+            // Mettre à jour le bouton d'action en fonction de la table d'origine (fromTable)
+            if (toTable === 'whitelist') {
+                newRow.insertCell(3).innerHTML = 
+                    `<button onclick="moveToBlacklist(${id}, '${email}')">Move to Blacklist</button>`;
+            } else if (toTable === 'blacklist') {
+                newRow.insertCell(3).innerHTML = 
+                    `<button onclick="moveToWhitelist(${id}, '${email}')">Move to Whitelist</button>`;
+            }
+        }
+        
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
         }
     </script>
 </body>
