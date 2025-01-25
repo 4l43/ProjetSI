@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,30 +8,48 @@
     <title>Blacklist and Whitelist Management</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-image: url("{% static 'image/IVR11_20229200440NUC6A_S.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            background-color: #ff9999;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         table, th, td {
-            border: 1px solid #ccc;
+            border: 1px solid #ffcccc;
         }
-        th, td {
+        th {
+            background-color: #cc0000;
+            color: #fff;
+            padding: 10px;
+            text-align: left;
+        }
+        td {
             padding: 10px;
             text-align: left;
         }
         button {
             padding: 10px 15px;
-            background-color: #007bff;
+            background-color: #cc0000;
             color: white;
             border: none;
             cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #990000;
+        }
+        button:active {
+            background-color: #660000;
         }
     </style>
 </head>
@@ -57,9 +77,6 @@
                     </td>
                 </tr>
             {% empty %}
-                <tr>
-                    <td colspan="4">No users in the whitelist.</td>
-                </tr>
             {% endfor %}
         </tbody>
     </table>
@@ -85,9 +102,6 @@
                     </td>
                 </tr>
             {% empty %}
-                <tr>
-                    <td colspan="4">No users in the blacklist.</td>
-                </tr>
             {% endfor %}
         </tbody>
     </table>
