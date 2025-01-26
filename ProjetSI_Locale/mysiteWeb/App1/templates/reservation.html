@@ -26,6 +26,15 @@
             </a>
         </div>
     </nav>
+    {% if messages %}
+    <div class="messages">
+        <ul>
+            {% for message in messages %}
+            <li class="message {{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
     <h1>Liste des Appointments</h1>
     <table>
         <thead>
