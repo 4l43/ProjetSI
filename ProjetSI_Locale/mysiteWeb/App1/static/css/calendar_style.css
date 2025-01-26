@@ -30,6 +30,14 @@ body{
     /* width: 90%;
 } */
 
+#attention{
+    /* border-radius: 20px; */
+    border-bottom: 1px solid #403d3d;
+    padding: 10px;
+    position: relative;
+    width: 90vw;
+    left: 5%;
+}
 span{
     color: white;
     text-align: justify;

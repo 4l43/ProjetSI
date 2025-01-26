@@ -18,6 +18,8 @@ from django.conf import settings
 import json
 from django.http import JsonResponse
 from .models import Whitelist, Blacklist
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 
 
@@ -288,7 +290,7 @@ def delete_appointment(request, appointment_id):
     messages.success(request, f"Le rendez-vous du {appointment.date} à {appointment.entry_time} a été supprimé avec succès.")
     
     # Rediriger vers la liste des rendez-vous (ajustez l'URL selon votre projet)
-    return render(request, 'reservation.html', {'appointments': appointments})
+    return redirect(reverse('reservation'))
 
 #____________________________________________________________________________________
 def admini(request):
@@ -301,3 +303,10 @@ def admini(request):
         'users': users_in_whitelist,
         'blacklist': users_in_blacklist
     })
+
+
+
+#deconexion !!!!
+def logout_view(request):
+    logout(request)  # Supprime l'utilisateur de la session
+    return redirect('index')  # Redirige vers la page de connexion
