@@ -290,6 +290,41 @@ def creation(request):
 
     # Si la méthode n'est pas POST, juste afficher le formulaire
     return render(request, 'creation.html')
+
+
+def suppression(request):
+    # Récupérer les utilisateurs dans la Whitelist et la Blacklist
+    users_in_whitelist = Whitelist.objects.all()
+    users_in_blacklist = Blacklist.objects.all()
+
+    # Combiner les deux listes dans un seul tableau
+    all_users = list(users_in_whitelist) + list(users_in_blacklist)
+
+    return render(request, 'suppression.html', {
+        'users': all_users  # Passer tous les utilisateurs combinés à la page
+    })
+
+def delete_user(request, user_id):
+    try:
+        # Vérifiez si l'utilisateur est dans la Whitelist
+        user_in_whitelist = Whitelist.objects.filter(id=user_id).first()
+        if user_in_whitelist:
+            user_in_whitelist.delete()
+            messages.success(request, f"L'utilisateur avec l'ID {user_id} a été supprimé de la Whitelist avec succès.")
+        else:
+            # Sinon, vérifiez s'il est dans la Blacklist
+            user_in_blacklist = Blacklist.objects.filter(id=user_id).first()
+            if user_in_blacklist:
+                user_in_blacklist.delete()
+                messages.success(request, f"L'utilisateur avec l'ID {user_id} a été supprimé de la Blacklist avec succès.")
+            else:
+                # L'utilisateur n'existe ni dans la Whitelist ni dans la Blacklist
+                messages.error(request, f"Aucun utilisateur trouvé avec l'ID {user_id}.")
+    except Exception as e:
+        messages.error(request, f"Erreur lors de la suppression de l'utilisateur : {e}")
+
+    return redirect('suppression')
+
     
 
 
@@ -325,6 +360,8 @@ def delete_appointment(request, appointment_id):
     
     # Rediriger vers la liste des rendez-vous (ajustez l'URL selon votre projet)
     return redirect(reverse('reservation'))
+
+
 
 #____________________________________________________________________________________
 def admini(request):
