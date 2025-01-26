@@ -1,0 +1,19 @@
+CREATE TABLE Appointment(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    idbox int,
+    mail VARCHAR(255) NOT NULL,
+    date DATE NOT NULL,
+    entry_time TIME NOT NULL,
+    exit_time TIME NOT NULL
+); 
+CREATE TABLE whitelist (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    mail VARCHAR(255) NOT NULL,
+    statut VARCHAR(60) NOT NULL
+
+);
+CREATE TABLE blacklist (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    mail VARCHAR(255) NOT NULL,
+    statut VARCHAR(60) NOT NULL
+);
