@@ -215,3 +215,22 @@ label.occupied input #text{
     margin: 0 5px;
     border-bottom: 1px solid #ed0029;
 }
+.messages {
+    margin: 20px auto;
+    padding: 10px;
+    max-width: 600px;
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.message {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+/* Style pour les messages rouges */
+.message.error {
+    border: 1px solid #f5c6cb;
+    background-color: #f8d7da; /* Rouge pâle */
+    color: #721c24; /* Rouge foncé pour le texte */
+}
