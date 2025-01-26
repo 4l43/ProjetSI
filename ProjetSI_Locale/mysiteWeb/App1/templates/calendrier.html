@@ -58,47 +58,60 @@
             </a>
         </div>
     </nav>
-    <div id="mois">
-        <h1>{{ month_name }} {{ current_year }}</h1>
-        <!-- Navigation between months -->
-        <form method="get" id="mois-nav" action="{% url 'calendar' %}">
-            <input type="hidden" name="year" value="{{ current_year }}">
-            <button type="submit" name="month" value="{{ previous_month }}" class="nav-btn">
-                Precedent
-            </button>
-            <button type="submit" name="month" value="{{ next_month }}" class="nav-btn">
-                Suivant
-            </button>
-        </form>
+    <div id="contneur">
+        <!-- attention -->
+        <div id="attention">
+            <h1>Regles de savoire vivre : </h1>
+            <span>- 2 crenaux max par persone si le nombre de crenaux selectioner est superieur à 2 seul les 2 derniers crenaux serons pris en compte</span>
+            <br><span>- Tout abus sera punis d'une excluion temporaire ou definitive</span>
+        </div>
+        
+        
+        <!-- <div id="calendrier"> -->
+        <div id="calendrier">
+            <!-- mois -->
+            <div id="mois">
+                <h1>{{ month_name }} {{ current_year }}</h1>
+                <!-- Navigation between months -->
+                <form method="get" id="mois-nav" action="{% url 'calendar' %}">
+                    <input type="hidden" name="year" value="{{ current_year }}">
+                    <button type="submit" name="month" value="{{ previous_month }}" class="nav-btn">
+                        Precedent
+                    </button>
+                    <button type="submit" name="month" value="{{ next_month }}" class="nav-btn">
+                        Suivant
+                    </button>
+                </form>
+            </div>
+            <!-- Calendar table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                        <th>Sun</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for week in calendar_days %}
+                    <tr>
+                        {% for day in week %}
+                        <td onclick="showCheckboxes({{ day }})">
+                            {% if day %}
+                                <b>{{ day }}</b>
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <!-- Calendar table -->
-    <table>
-        <thead>
-            <tr>
-                <th>Mon</th>
-                <th>Tue</th>
-                <th>Wed</th>
-                <th>Thu</th>
-                <th>Fri</th>
-                <th>Sat</th>
-                <th>Sun</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for week in calendar_days %}
-            <tr>
-                {% for day in week %}
-                <td onclick="showCheckboxes({{ day }})">
-                    {% if day %}
-                        <b>{{ day }}</b>
-                    {% endif %}
-                </td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
     <!-- Form for checkboxes -->
     <form method="post" action="{% url 'calendar' %}">
         {% csrf_token %}

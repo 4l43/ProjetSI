@@ -17,7 +17,7 @@
 }
 
 body{
-    background-color: #150101;
+    background-color: #161b1c;
     margin: 0;
     padding: 0;
     border: 0;
@@ -67,7 +67,7 @@ td{
     font-size: medium;
     color: #f4e8e8;
     /* background-color: #1e1e1e; */
-    background-color: #150101;
+    background-color: #161b1c;
 }
 td:hover {
     font-size: large;
@@ -113,7 +113,7 @@ label,input{
     margin-top: 20px;
     padding: 10px 20px;
     /* background-color: #4caf50; */
-    background-color: #150101;
+    background-color: #161b1c;
     border: 1px solid #403d3d;
     color: white;
     /* border: none; */
@@ -129,7 +129,7 @@ label,input{
     /* background-color: #4caf50; */
     color: white;
     /* border: none; */
-    background-color: #150101;
+    background-color: #161b1c;
     border: 1px solid #403d3d;
     border-radius: 5px;
     cursor: pointer;
@@ -167,7 +167,7 @@ label.occupied input #text{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #150101;
+    background-color: #161b1c;
     color: #fff;
     padding: 10px 20px;
     border-bottom: 1px solid #403d3d;
@@ -206,7 +206,7 @@ label.occupied input #text{
 }
 
 .navbar .left-buttons button{
-    background-color: #150101;
+    background-color: #161b1c;
 }
 
 .navbar .left-buttons a:hover {

@@ -288,7 +288,7 @@ def delete_appointment(request, appointment_id):
     messages.success(request, f"Le rendez-vous du {appointment.date} à {appointment.entry_time} a été supprimé avec succès.")
     
     # Rediriger vers la liste des rendez-vous (ajustez l'URL selon votre projet)
-    return redirect(reverse('reservation'))
+    return render(request, 'reservation.html', {'appointments': appointments})
 
 #____________________________________________________________________________________
 def admini(request):
