@@ -19,10 +19,13 @@
                 <button type="button">Mes réservations</button>
             </a>
             <a href="{% url 'box' %}">
-                <button type="button">Gestion des box</button>
+                <button type="button">Changer de box</button>
             </a>
             <a href="{% url 'creation' %}">
-                <button type="button">Création d'admin</button>
+                <button type="button">Création d'administrateur</button>
+            </a>
+            <a href="{% url 'admini' %}">
+                <button type="button">Gérer les utilisateurs</button>
             </a>
         </div>
         <div class="right-button logout">
@@ -32,11 +35,6 @@
         </div>
     </nav>
     <h1>Manage Blacklist and Whitelist</h1>
-    <div style="text-align: center; margin-top: 20px;">
-        <!-- <a href="{% url 'choixAdmin' %}">
-            <button style="padding: 10px 20px; font-size: 16px; background-color: #cc0000; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Retour au Fonctionnalité</button>
-        </a> -->
-    </div>
 
     <h2>Whitelist</h2>
     <table id="whitelist">

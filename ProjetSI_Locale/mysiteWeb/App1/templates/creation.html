@@ -18,7 +18,10 @@
                 <button type="button">Mes réservations</button>
             </a>
             <a href="{% url 'box' %}">
-                <button type="button">Gestion des box</button>
+                <button type="button">Changer de box</button>
+            </a>
+            <a href="{% url 'creation' %}">
+                <button type="button">Création d'administrateur</button>
             </a>
             <a href="{% url 'admini' %}">
                 <button type="button">Gérer les utilisateurs</button>
@@ -30,12 +33,6 @@
             </a>
         </div>
     </nav>
-    <header>
-        <h1>Création d'un Administrateur</h1>
-        <!-- <nav>
-            <button onclick="window.location.href='{% url 'choixAdmin' %}'">Retour au choix administrateur</button>
-        </nav> -->
-    </header>
 
     <section>
         <h2>Ajouter un nouvel administrateur</h2>
