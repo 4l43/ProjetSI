@@ -20,6 +20,8 @@ from django.http import JsonResponse
 from .models import Whitelist, Blacklist
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from django.urls import reverse
+from django.shortcuts import get_object_or_404
 
 
 
