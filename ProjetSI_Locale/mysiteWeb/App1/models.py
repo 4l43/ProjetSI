@@ -18,7 +18,7 @@ class Blacklist(models.Model):
 
 class Appointment(models.Model):
     mail = models.EmailField(max_length=255)  # Champ pour stocker les adresses email
-    idbox = models.IntegerField(default=1, primary_key=True)
+    idbox = models.IntegerField(default=1)
     date = models.DateField()  # Date de l'appartement
     entry_time = models.TimeField()  # Heure de début
     exit_time = models.TimeField()  # Heure de fin
