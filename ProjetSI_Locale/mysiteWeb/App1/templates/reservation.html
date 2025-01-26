@@ -46,10 +46,13 @@
                 <td>{{ appointment.exit_time }}</td>
                 <td>{{ appointment.idbox }}</td>
                 <td>
+                    {% if appointment.id %}
                     <form method="POST" action="{% url 'delete_appointment' appointment.id %}" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="delete-button">Supprimer</button>
                     </form>
+                    {% else %}
+                    {% endif %}
                 </td>
             </tr>
             {% empty %}

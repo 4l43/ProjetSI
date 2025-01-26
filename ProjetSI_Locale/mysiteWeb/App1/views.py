@@ -53,10 +53,21 @@ def index(request):
         print(f"Code stocké dans la session : {stored_code}")
         if entered_code == stored_code:
             print("Code correct")
-            # Rediriger vers la page calendrier si le code est correct
+            
+            # Vérifier si l'utilisateur est un administrateur
             mail = request.session.get('mail')
-            ajouter_a_whitelist(mail, 'user')
-            return redirect('box')  # Assurez-vous que l'URL 'calendar' existe
+            try:
+                user = Whitelist.objects.get(mail=mail)  # Trouver l'utilisateur par son mail
+                if user.statut == 'admin':
+                    print("L'utilisateur est un administrateur")
+                    return redirect('choixAdmin')  # Rediriger vers le template 'choixadmin' si admin
+                else:
+                    print("L'utilisateur n'est pas un administrateur")
+                    ajouter_a_whitelist(mail, 'user')  # Ajouter à la whitelist si ce n'est pas un admin
+                    return redirect('box')  # Rediriger vers le template 'box' pour les utilisateurs normaux
+            except Whitelist.DoesNotExist:
+                print("Identifiant non trouvé dans la whitelist")
+                return render(request, 'login.html', {'step': 'identifiant', 'error_message': "Identifiant non trouvé dans la whitelist."})
         else:
             print("Code incorrect")
             # Si le code est incorrect, redemander l'identifiant
@@ -257,6 +268,46 @@ def ajouter_a_whitelist(mail, statut):
         print(f"Le mail {mail} a été ajouté à la whitelist.")
     else:
         print(f"Le mail {mail} existe déjà dans la whitelist.")
+
+def choixAdmin(request):
+    if request.method == "POST":
+        selected_choixAdmin = request.POST.get("choixAdmin")
+        if selected_choixAdmin:
+            request.session['selected_choixAdmin'] = selected_choixAdmin
+
+            if selected_choixAdmin == "1":  # Gérer les utilisateurs
+                return redirect('admini')  # Rediriger vers le template admini.html
+            elif selected_choixAdmin == "2":  # Gérer les box
+                return redirect('creation')  # Rediriger vers la page de création (à définir)
+
+    # Exemple de choix disponibles
+    fonctionnalitées = [
+        {"id": 1, "name": "Gérer les utilisateurs"},
+        {"id": 2, "name": "Création d'admin"},
+    ]
+
+    return render(request, 'choixadmin.html', {'fonctionnalitées': fonctionnalitées})
+
+def creation(request):
+    # Si la requête est en POST
+    if request.method == 'POST':
+        # Récupérer l'email du formulaire
+        email = request.POST.get('admin_email')
+        print(f"Email reçu : {email}")
+
+        # Vérifier si l'email existe déjà dans la whitelist
+        if Whitelist.objects.filter(mail=email).exists():
+            messages.error(request, "L'email existe déjà dans la whitelist.")  # Message d'erreur
+            return render(request, 'creation.html')  # Renvoyer au formulaire avec message d'erreur
+        else:
+            # Ajouter l'email à la whitelist avec statut 'admin'
+            Whitelist.objects.create(mail=email, statut='admin')
+            messages.success(request, "L'administrateur a été créé avec succès.")  # Message de succès
+            return redirect('choixAdmin')  # Rediriger vers la page de choix administrateur
+
+    # Si la méthode n'est pas POST, juste afficher le formulaire
+    return render(request, 'creation.html')
+    
 
 
 #____________________________________________________________________________________
