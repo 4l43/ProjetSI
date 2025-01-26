@@ -7,13 +7,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blacklist and Whitelist Management</title>
     <link rel="stylesheet" href="{% static 'css/admini.css'%}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+   
 </head>
 <body>
+    <nav class="navbar">
+        <div class="left-buttons">
+            <a href="{% url 'reservation' %}">
+                <button type="button">Mes réservations</button>
+            </a>
+            <a href="{% url 'box' %}">
+                <button type="button">Gestion des box</button>
+            </a>
+            <a href="{% url 'creation' %}">
+                <button type="button">Création d'admin</button>
+            </a>
+        </div>
+        <div class="right-button logout">
+            <a href="{% url 'logout' %}">
+                <button type="button">Déconnexion</button>
+            </a>
+        </div>
+    </nav>
     <h1>Manage Blacklist and Whitelist</h1>
     <div style="text-align: center; margin-top: 20px;">
-        <a href="{% url 'choixAdmin' %}">
+        <!-- <a href="{% url 'choixAdmin' %}">
             <button style="padding: 10px 20px; font-size: 16px; background-color: #cc0000; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Retour au Fonctionnalité</button>
-        </a>
+        </a> -->
     </div>
 
     <h2>Whitelist</h2>
@@ -33,7 +55,7 @@
                     <td>{{ user.mail }}</td>
                     <td>{{ user.statut }}</td>
                     <td>
-                        <button onclick="moveToBlacklist({{ user.id }}, '{{ user.mail }}')">Move to Blacklist</button>
+                        <button onclick="moveToBlacklist({{ user.id }}, '{{ user.mail }}')" id="mtb">Move to Blacklist</button>
                     </td>
                 </tr>
             {% empty %}
@@ -58,7 +80,7 @@
                     <td>{{ user.mail }}</td>
                     <td>{{ user.statut }}</td>
                     <td>
-                        <button onclick="moveToWhitelist({{ user.id }}, '{{ user.mail }}')">Move to Whitelist</button>
+                        <button onclick="moveToWhitelist({{ user.id }}, '{{ user.mail }}')" id="mtw" >Move to Whitelist</button>
                     </td>
                 </tr>
             {% empty %}
