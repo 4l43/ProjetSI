@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choix Admin</title>
+    <link rel="stylesheet" href="{% static 'css/choixadmin.css'%}">
+</head>
+<body>
+    <h1>Choisissez une fonctionnalité</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {% for fonctionnalitée in fonctionnalitées %}
+            <button type="submit" name="choixAdmin" value="{{ fonctionnalitée.id }}">{{ fonctionnalitée.name }}</button>
+        {% endfor %}
+        <button href="{% url 'index' %}">Retour à l'accueil</button>
+    </form>
+</body>
+</html>
