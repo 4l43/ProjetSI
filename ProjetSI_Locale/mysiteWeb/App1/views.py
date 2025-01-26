@@ -65,10 +65,16 @@ def index(request):
                     return redirect('admini')  # Rediriger vers le template 'choixadmin' si admin
                 else:
                     print("L'utilisateur n'est pas un administrateur")
-                    ajouter_a_whitelist(mail, 'user')  # Ajouter à la whitelist si ce n'est pas un admin
                     return redirect('box')  # Rediriger vers le template 'box' pour les utilisateurs normaux
             except Whitelist.DoesNotExist:
                 print("Identifiant non trouvé dans la whitelist")
+                # Ajouter l'utilisateur à la whitelist si non trouvé
+                if mail:  # Vérifier que le mail est bien présent dans la session
+                    # Créer l'utilisateur et l'ajouter à la whitelist
+                    new_user = Whitelist(mail=mail, statut='user')
+                    new_user.save()
+                    print("Utilisateur ajouté à la whitelist.")
+                    return redirect('box')  # Rediriger après l'ajout
                 return render(request, 'login.html', {'step': 'identifiant', 'error_message': "Identifiant non trouvé dans la whitelist."})
         else:
             print("Code incorrect")
@@ -77,7 +83,6 @@ def index(request):
 
     # Par défaut, afficher la page avec l'étape d'identification si aucune requête POST n'est reçue
     return render(request, 'login.html', {'step': 'identifiant'})
-
 
 def envoie_mail(code, identifiant):
     subject = "Code de vérification"
