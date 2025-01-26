@@ -30,161 +30,38 @@ h1,h2{
     padding-top: 20px;
 }
 
-button{
-    border-radius: 20%;
-}
-#mois{
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-}
-
-#mois-nav{
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-
-table {
-    width: 100vw;
-    border-collapse: collapse;
-}
-
-
-th, td {
-    /* border: 1px solid #403d3d; */
-    text-align: center;
-    padding: 10px;
-    cursor: pointer;
-}
-
-th {
+label{
     color: white;
-    border: 1px solid #403d3d;
-    background-color: #ed0029;
-    cursor: default;
-}
-
-td{
-    /* border-radius: 20%; */
-    font-size: medium;
-    color: #f4e8e8;
-    /* background-color: #1e1e1e; */
-    background-color: #161b1c;
-    cursor:default;
-}
-/* td:hover {
-    font-size: large;
-    transition: font-size 0.5s ease;
-    background-color: #382b30;
-    color: #ed0029;
-} */
-
-label,input{
-    cursor: pointer;
-}
-
-#mtb,#mtw{
-    margin-top: 20px;
-    padding: 10px 20px;
-    /* background-color: #4caf50; */
-    background-color: #161b1c;
-    border: 1px solid #403d3d;
-    color: white;
-    /* border: none; */
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#mtb:hover {
-    color: #ed0029;
-    background-color: #321919;
-}
-
-#mtw:hover{
-    color: #00ed3b;
-    background-color: #00ed3b80;
-}
-
-.checkbox-container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
     text-align: center;
-    /* gap: 10px; */
-    /* margin-top: 20px; */
 }
-.checkbox-container label {
-    /* background-color: #e0ffe0; */
-    padding: 30px;
-    /* border: 1px solid #a0ffa0; */
-    border-top: 1px solid #403d3d;
-    /* border-radius: 5px; */
+
+#form1{
     display: flex;
     align-items: center;
-    gap: 5px;
     justify-content: center;
-    color: white;
-    animation: fondu  1s ease-in-out forwards;
-
+    gap: 10px;
 }
 
-.checkbox-container label:hover {
-    color: #ed0029;
-    background-color: #321919;
-}
-
-.submit-btn {
-    position: relative;
-    left: 60%;
-    margin-top: 20px;
-    padding: 10px 20px;
-    /* background-color: #4caf50; */
-    background-color: #161b1c;
-    border: 1px solid #403d3d;
-    color: white;
-    /* border: none; */
-    border-radius: 5px;
+#cadm{
+    color: #fff;
+    border: none;
+    /* padding: 10px 15px; */
     cursor: pointer;
-}
-.submit-btn:hover {
-    background-color: #ed0029;
-}
-.nav-btn {
-    padding: 5px 10px;
-    margin: 10px;
-    /* background-color: #4caf50; */
-    color: white;
-    /* border: none; */
-    background-color: #161b1c;
-    border: 1px solid #403d3d;
     border-radius: 5px;
-    cursor: pointer;
-}
-.nav-btn:hover {
-    /* background-color: #45a049; */
-    background-color: #ed0029;
-}
-
-.occupied {
-    /* background-color: #d3d3d3; */
-    color: #808080;
-    pointer-events: none;  /* Désactive le clic */
-}
-
-label.occupied input #text{
-    color: #403d3d;
-}
-
-.occupied input {
-    pointer-events: none;
-    display: none;  /* Désactive l'interaction avec les cases à cocher */
-}
-
-.error {
-    color: red;
+    transition: background-color 0.3s;
+    padding: 10px 15px;
+    background-color: #ed0029; /* Rouge pour le bouton déconnexion */
     font-weight: bold;
-    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+#admin_email{
+    height: 100%;
+}
+
+#cadm:hover {
+    background-color: #ed0029;
+    color: #d32f2f;
 }
 
 
