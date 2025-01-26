@@ -1,4 +1,10 @@
 /* Global Styles */
+*{
+    font-family: "Poppins", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
